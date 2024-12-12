@@ -75,23 +75,24 @@ export default function PlayerControls() {
 
   return (
     <Container className="flex items-center justify-center gap-8">
-      <div className="shuffle">
+      <div className="shuffle cursor-pointer">
         <BsShuffle />
       </div>
-      <div className="previous text-[2rem]">
+      <div className="previous text-[2rem] cursor-pointer">
         <CgPlayTrackPrev onClick={() => changeTrack("previous")} />
       </div>
-      <div className="state text-[2rem]">
+      <div className="state text-[2rem] cursor-pointer hover:transition duration-300 ease-in-out hover:scale-110">
         {playerState ? (
           <BsFillPauseCircleFill onClick={changeState} />
         ) : (
           <BsFillPlayCircleFill onClick={changeState} />
         )}
       </div>
-      <div className="next text-[2rem]">
+
+      <div className="next text-[2rem] cursor-pointer">
         <CgPlayTrackNext onClick={() => changeTrack("next")} />
       </div>
-      <div className="repeat">
+      <div className="repeat cursor-pointer">
         <FiRepeat />
       </div>
     </Container>

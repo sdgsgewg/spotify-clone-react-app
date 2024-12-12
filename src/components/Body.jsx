@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { AiFillClockCircle } from "react-icons/ai";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+import SingleTrack from "./SingleTrack";
 
 export default function Body({ headerBackground }) {
   const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] =
@@ -47,54 +48,6 @@ export default function Body({ headerBackground }) {
     getInitialPlaylist();
   }, [token, selectedPlaylistId, dispatch]);
 
-  const msToMinutesAndSeconds = (ms) => {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = ((ms % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  };
-
-  const playTrack = async (
-    id,
-    name,
-    artists,
-    image,
-    context_uri,
-    track_number
-  ) => {
-    try {
-      const response = await axios.put(
-        `https://api.spotify.com/v1/me/player/play`,
-        {
-          context_uri,
-          offset: {
-            position: track_number - 1,
-          },
-          position_ms: 0,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.status === 204) {
-        const currentlyPlaying = {
-          id,
-          name,
-          artists,
-          image,
-        };
-        dispatch({ type: reducerCases.SET_PLAYING, currentlyPlaying });
-        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-      } else {
-        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-      }
-    } catch (error) {
-      console.error("Error playing track: ", error.response.data);
-    }
-  };
-
   return (
     <Container headerBackground={headerBackground}>
       {selectedPlaylist && (
@@ -137,57 +90,9 @@ export default function Body({ headerBackground }) {
               </div>
             </div>
             <div className="tracks mx-[2rem] flex flex-col mb-20">
-              {selectedPlaylist.tracks.map(
-                (
-                  {
-                    id,
-                    name,
-                    artists,
-                    image,
-                    duration,
-                    album,
-                    context_uri,
-                    track_number,
-                  },
-                  index
-                ) => {
-                  return (
-                    <div
-                      className="row py-2 px-4 grid items-center"
-                      key={id}
-                      onClick={() =>
-                        playTrack(
-                          id,
-                          name,
-                          artists,
-                          image,
-                          context_uri,
-                          track_number
-                        )
-                      }
-                    >
-                      <div className="col">
-                        <span>{index + 1}</span>
-                      </div>
-                      <div className="col detail flex gap-4">
-                        <div className="image">
-                          <img className="h-[40px]" src={image} alt="track" />
-                        </div>
-                        <div className="info flex flex-col">
-                          <span className="name">{name}</span>
-                          <span>{artists.join(", ")}</span>
-                        </div>
-                      </div>
-                      <div className="col">
-                        <span>{album}</span>
-                      </div>
-                      <div className="col">
-                        <span>{msToMinutesAndSeconds(duration)}</span>
-                      </div>
-                    </div>
-                  );
-                }
-              )}
+              {selectedPlaylist.tracks.map((track, index) => (
+                <SingleTrack track={track} index={index} key={track.id} />
+              ))}
             </div>
           </div>
         </>
