@@ -76,15 +76,15 @@ export default function SingleTrack({ track, index }) {
           <img className="h-[40px]" src={track.image} alt="track" />
         </div>
         <div className="info flex flex-col">
-          <span className="name">{name}</span>
-          <span>{track.artists.join(", ")}</span>
+          <span className="name text-white font-[500]">{track.name}</span>
+          <span className="text-slate-400 text-sm">{track.artists.join(", ")}</span>
         </div>
       </div>
       <div className="col">
-        <span>{track.album}</span>
+        <span className="text-slate-400">{track.album}</span>
       </div>
       <div className="col">
-        <span>{msToMinutesAndSeconds(track.duration)}</span>
+        <span className="text-slate-400">{msToMinutesAndSeconds(track.duration)}</span>
       </div>
     </div>
   );

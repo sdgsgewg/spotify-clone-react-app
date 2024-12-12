@@ -68,6 +68,7 @@ export default function Volume() {
       <input
         ref={sliderRef}
         type="range"
+        className="w-[70%] h-2 rounded cursor-pointer"
         min="0"
         max="100"
         value={volume} // Controlled by state
@@ -81,15 +82,11 @@ export default function Volume() {
 const Container = styled.div`
   input[type="range"] {
     -webkit-appearance: none;
-    width: 100%;
-    height: 0.5rem;
     background: linear-gradient(
       to right,
       white var(--value, 0%),
       gray var(--value, 0%)
     ); /* Dynamically update the filled track color */
-    border-radius: 0.25rem;
-    cursor: pointer;
   }
 
   input[type="range"]::-webkit-slider-thumb {
